@@ -1,12 +1,19 @@
-import { prisma } from '@/lib/prisma'
 import ProductCard from '@/components/ProductCard'
+import { getDb } from '@/lib/mongodb'
+import type { ProductDoc } from '@/lib/models'
+import { serializeProduct } from '@/lib/serialize'
+
+export const dynamic = 'force-dynamic'
 
 async function getProducts() {
-  const products = await prisma.product.findMany({
-    where: { inStock: true },
-    orderBy: { createdAt: 'desc' },
-  })
-  return products
+  const db = await getDb()
+  const products = await db
+    .collection<ProductDoc>('products')
+    .find({ inStock: true })
+    .sort({ createdAt: -1 })
+    .toArray()
+
+  return products.map(serializeProduct)
 }
 
 export default async function ProductsPage() {

@@ -1,24 +1,63 @@
-import { PrismaClient } from '@prisma/client'
+import { MongoClient } from 'mongodb'
 import bcrypt from 'bcryptjs'
 
-const prisma = new PrismaClient()
+function getMongoUri() {
+  const uri = process.env.MONGODB_URI || process.env.DATABASE_URL
+  if (!uri) {
+    throw new Error('Missing MONGODB_URI (or DATABASE_URL) environment variable')
+  }
+  return uri
+}
+
+function getMongoDbName(uri: string) {
+  const fromEnv = process.env.MONGODB_DB
+  if (fromEnv) return fromEnv
+
+  try {
+    const url = new URL(uri)
+    const pathname = url.pathname.replace(/^\//, '')
+    if (pathname) return pathname
+  } catch {
+    // ignore
+  }
+
+  return 'agroveda'
+}
 
 async function main() {
+  const uri = getMongoUri()
+  const client = new MongoClient(uri)
+  await client.connect()
+  const db = client.db(getMongoDbName(uri))
+
+  const users = db.collection('users')
+  const productsCol = db.collection('products')
+  const enquiries = db.collection('enquiries')
+
+  await users.createIndex({ email: 1 }, { unique: true })
+  await productsCol.createIndex({ slug: 1 }, { unique: true })
+  await enquiries.createIndex({ productId: 1 })
+
   // Create admin user
   const hashedPassword = await bcrypt.hash('admin123', 10)
-  
-  const admin = await prisma.user.upsert({
-    where: { email: 'admin@agrovedaexports.com' },
-    update: {},
-    create: {
-      email: 'admin@agrovedaexports.com',
-      password: hashedPassword,
-      name: 'Admin User',
-      role: 'ADMIN', // String value for SQLite
-    },
-  })
+  const now = new Date()
 
-  console.log('Admin user created:', admin.email)
+  await users.updateOne(
+    { email: 'admin@agrovedaexports.com' },
+    {
+      $setOnInsert: {
+        email: 'admin@agrovedaexports.com',
+        password: hashedPassword,
+        name: 'Admin User',
+        role: 'ADMIN',
+        createdAt: now,
+      },
+      $set: { updatedAt: now },
+    },
+    { upsert: true }
+  )
+
+  console.log('Admin user ensured: admin@agrovedaexports.com')
 
   // Create products
   const products = [
@@ -93,22 +132,29 @@ Perfect for food manufacturers, health food stores, and export markets looking f
   ]
 
   for (const product of products) {
-    const created = await prisma.product.upsert({
-      where: { slug: product.slug },
-      update: product,
-      create: product,
-    })
-    console.log(`Product created/updated: ${created.name}`)
+    await productsCol.updateOne(
+      { slug: product.slug },
+      {
+        $set: {
+          ...product,
+          updatedAt: new Date(),
+        },
+        $setOnInsert: {
+          createdAt: new Date(),
+        },
+      },
+      { upsert: true }
+    )
+    console.log(`Product ensured: ${product.name}`)
   }
 
   console.log('Database seeded successfully!')
+
+  await client.close()
 }
 
 main()
   .catch((e) => {
     console.error(e)
     process.exit(1)
-  })
-  .finally(async () => {
-    await prisma.$disconnect()
   })

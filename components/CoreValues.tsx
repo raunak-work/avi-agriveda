@@ -1,4 +1,6 @@
 import { Award, Leaf, Shield, Heart } from 'lucide-react'
+import SectionHeading from '@/components/SectionHeading'
+import Reveal from '@/components/Reveal'
 
 const values = [
   {
@@ -29,31 +31,31 @@ const values = [
 
 export default function CoreValues() {
   return (
-    <section className="py-16 bg-white">
+    <section className="py-20 bg-gradient-to-b from-cream-50 to-forest-50/40">
       <div className="container mx-auto px-4">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-            Our Core Values
-          </h2>
-          <p className="text-gray-600 max-w-2xl mx-auto">
-            The principles that guide everything we do at Agroveda Exports
-          </p>
-        </div>
+        <Reveal>
+          <SectionHeading
+            eyebrow="Values"
+            title="Our Core Values"
+            description="The principles that guide everything we do at Agroveda Exports."
+          />
+        </Reveal>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {values.map((value, index) => (
-            <div
-              key={index}
-              className="text-center p-6 rounded-lg hover:shadow-lg transition"
-            >
-              <div className="inline-flex items-center justify-center w-16 h-16 bg-primary-100 rounded-full mb-4">
-                <value.icon className="w-8 h-8 text-primary-600" />
+            <Reveal key={index} delayMs={index * 70}>
+              <div className="group text-center p-7 rounded-2xl border border-forest-900/10 bg-white/80 shadow-sm hover:shadow-xl hover:-translate-y-1 transition">
+                <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl mb-5 bg-forest-50 border border-forest-900/10 shadow-sm group-hover:shadow-md transition">
+                  <value.icon className="w-7 h-7 text-forest-700" />
+                </div>
+                <h3 className="text-xl font-semibold text-forest-900 mb-2">
+                  {value.title}
+                </h3>
+                <p className="text-forest-900/70 leading-relaxed">
+                  {value.description}
+                </p>
               </div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">
-                {value.title}
-              </h3>
-              <p className="text-gray-600">{value.description}</p>
-            </div>
+            </Reveal>
           ))}
         </div>
       </div>

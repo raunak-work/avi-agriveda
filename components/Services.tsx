@@ -1,4 +1,6 @@
 import { Globe, Package, FileText, Users } from 'lucide-react'
+import SectionHeading from '@/components/SectionHeading'
+import Reveal from '@/components/Reveal'
 
 const services = [
   {
@@ -29,31 +31,31 @@ const services = [
 
 export default function Services() {
   return (
-    <section id="services" className="py-16 bg-white">
+    <section id="services" className="py-20 bg-white">
       <div className="container mx-auto px-4">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-            Our Services
-          </h2>
-          <p className="text-gray-600 max-w-2xl mx-auto">
-            Comprehensive solutions for all your agricultural export needs
-          </p>
-        </div>
+        <Reveal>
+          <SectionHeading
+            eyebrow="Services"
+            title="Export-Ready Services"
+            description="Comprehensive solutions for sourcing, quality, packaging, and global dispatch."
+          />
+        </Reveal>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {services.map((service, index) => (
-            <div
-              key={index}
-              className="p-6 rounded-lg border border-gray-200 hover:border-primary-300 hover:shadow-lg transition"
-            >
-              <div className="inline-flex items-center justify-center w-12 h-12 bg-primary-100 rounded-lg mb-4">
-                <service.icon className="w-6 h-6 text-primary-600" />
+            <Reveal key={index} delayMs={index * 70}>
+              <div className="group p-7 rounded-2xl border border-forest-900/10 bg-white shadow-sm hover:shadow-xl hover:-translate-y-1 transition">
+                <div className="inline-flex items-center justify-center w-12 h-12 bg-forest-50 rounded-xl mb-5 border border-forest-900/10 shadow-sm group-hover:shadow-md transition">
+                  <service.icon className="w-6 h-6 text-forest-700" />
+                </div>
+                <h3 className="text-xl font-semibold text-forest-900 mb-2">
+                  {service.title}
+                </h3>
+                <p className="text-forest-900/70 leading-relaxed">
+                  {service.description}
+                </p>
               </div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">
-                {service.title}
-              </h3>
-              <p className="text-gray-600">{service.description}</p>
-            </div>
+            </Reveal>
           ))}
         </div>
       </div>

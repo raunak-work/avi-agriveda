@@ -1,13 +1,16 @@
-import { prisma } from '@/lib/prisma'
 import { notFound } from 'next/navigation'
 import ProductDetail from '@/components/ProductDetail'
 import EnquiryForm from '@/components/EnquiryForm'
+import { getDb } from '@/lib/mongodb'
+import type { ProductDoc } from '@/lib/models'
+import { serializeProduct } from '@/lib/serialize'
+
+export const dynamic = 'force-dynamic'
 
 async function getProduct(slug: string) {
-  const product = await prisma.product.findUnique({
-    where: { slug },
-  })
-  return product
+  const db = await getDb()
+  const product = await db.collection<ProductDoc>('products').findOne({ slug })
+  return product ? serializeProduct(product) : null
 }
 
 export default async function ProductPage({

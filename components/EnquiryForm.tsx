@@ -66,17 +66,17 @@ export default function EnquiryForm({ productId, productName }: EnquiryFormProps
   }
 
   return (
-    <div className="bg-white rounded-lg shadow-lg p-8">
-      <h2 className="text-2xl font-bold text-gray-900 mb-6">
+    <div className="bg-white rounded-2xl border border-forest-900/10 shadow-sm p-8">
+      <h2 className="font-serif text-2xl md:text-3xl font-bold text-forest-900 mb-6">
         Enquire About {productName}
       </h2>
 
       {submitStatus === 'success' && (
-        <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg">
-          <p className="text-green-800 font-semibold mb-2">
+        <div className="mb-6 p-4 bg-forest-50 border border-forest-900/10 rounded-xl">
+          <p className="text-forest-900 font-semibold mb-2">
             Enquiry submitted successfully!
           </p>
-          <p className="text-green-700 text-sm mb-4">
+          <p className="text-forest-900/70 text-sm mb-4">
             We'll get back to you soon. You can also contact us directly via WhatsApp.
           </p>
           {whatsappLink && (
@@ -84,7 +84,7 @@ export default function EnquiryForm({ productId, productName }: EnquiryFormProps
               href={whatsappLink}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition"
+              className="inline-flex items-center bg-gold-500 text-forest-900 px-5 py-2.5 rounded-lg font-extrabold uppercase tracking-[0.12em] hover:bg-gold-400 transition"
             >
               <MessageCircle className="mr-2 w-5 h-5" />
               Contact via WhatsApp
@@ -94,7 +94,7 @@ export default function EnquiryForm({ productId, productName }: EnquiryFormProps
       )}
 
       {submitStatus === 'error' && (
-        <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
+        <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-xl">
           <p className="text-red-800">
             Something went wrong. Please try again or contact us directly.
           </p>
@@ -103,14 +103,14 @@ export default function EnquiryForm({ productId, productName }: EnquiryFormProps
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
         <div>
-          <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
+          <label htmlFor="name" className="block text-sm font-medium text-forest-900/80 mb-2">
             Name *
           </label>
           <input
             type="text"
             id="name"
             {...register('name')}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+            className="w-full px-4 py-3 border border-forest-900/15 rounded-xl focus:ring-2 focus:ring-gold-400/60 focus:border-transparent outline-none bg-white"
             placeholder="Your full name"
           />
           {errors.name && (
@@ -119,14 +119,14 @@ export default function EnquiryForm({ productId, productName }: EnquiryFormProps
         </div>
 
         <div>
-          <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+          <label htmlFor="email" className="block text-sm font-medium text-forest-900/80 mb-2">
             Email Address *
           </label>
           <input
             type="email"
             id="email"
             {...register('email')}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+            className="w-full px-4 py-3 border border-forest-900/15 rounded-xl focus:ring-2 focus:ring-gold-400/60 focus:border-transparent outline-none bg-white"
             placeholder="your.email@example.com"
           />
           {errors.email && (
@@ -135,14 +135,14 @@ export default function EnquiryForm({ productId, productName }: EnquiryFormProps
         </div>
 
         <div>
-          <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-2">
+          <label htmlFor="phone" className="block text-sm font-medium text-forest-900/80 mb-2">
             Phone Number *
           </label>
           <input
             type="tel"
             id="phone"
             {...register('phone')}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+            className="w-full px-4 py-3 border border-forest-900/15 rounded-xl focus:ring-2 focus:ring-gold-400/60 focus:border-transparent outline-none bg-white"
             placeholder="+91-XXXXXXXXXX"
           />
           {errors.phone && (
@@ -151,14 +151,14 @@ export default function EnquiryForm({ productId, productName }: EnquiryFormProps
         </div>
 
         <div>
-          <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-2">
+          <label htmlFor="message" className="block text-sm font-medium text-forest-900/80 mb-2">
             Message (Optional)
           </label>
           <textarea
             id="message"
             {...register('message')}
             rows={4}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+            className="w-full px-4 py-3 border border-forest-900/15 rounded-xl focus:ring-2 focus:ring-gold-400/60 focus:border-transparent outline-none bg-white"
             placeholder="Tell us about your requirements..."
           />
         </div>
@@ -167,7 +167,7 @@ export default function EnquiryForm({ productId, productName }: EnquiryFormProps
           <button
             type="submit"
             disabled={isSubmitting}
-            className="flex-1 flex items-center justify-center bg-primary-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-primary-700 transition disabled:opacity-50 disabled:cursor-not-allowed"
+            className="flex-1 flex items-center justify-center bg-forest-900 text-white px-6 py-3.5 rounded-xl font-extrabold uppercase tracking-[0.12em] hover:bg-forest-800 transition disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {isSubmitting ? (
               <>
@@ -185,7 +185,7 @@ export default function EnquiryForm({ productId, productName }: EnquiryFormProps
             href={`https://wa.me/919876543210?text=Hello, I am interested in ${encodeURIComponent(productName)}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex-1 flex items-center justify-center bg-green-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-green-700 transition"
+            className="flex-1 flex items-center justify-center bg-gold-500 text-forest-900 px-6 py-3.5 rounded-xl font-extrabold uppercase tracking-[0.12em] hover:bg-gold-400 transition"
           >
             <MessageCircle className="mr-2 w-5 h-5" />
             WhatsApp Us
